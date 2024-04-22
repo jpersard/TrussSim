@@ -2,7 +2,7 @@
 
 
 import matplotlib.pyplot as plt
-import classes
+import classes # type: ignore
 
 
 def plot_truss_structure(connections, supports, nodes, loads):
