@@ -1,41 +1,22 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import classes
+import functions
 
 
 # define truss nodes
-nodes = np.array([[0, 0], [1, 1], [2, 0], [3, 1], [4, 0]])
+nodes_data = [(0, 0), (3, 2), (3, 0), (6, 0)]
+nodes = [classes.Node(x, y) for x, y in nodes_data]
 
 # define connections
-connections = [(0, 1),(0, 2), (1, 2), (2, 3),(2, 4), (3, 4)]
+connections_data = [(0, 1),(0, 2), (1, 2), (1, 3),(2, 3)]
+connections = [classes.Connection(nodes[i], nodes[j]) for i, j in connections_data]
 
 # Define supports
-supports = {0: 'pin', 4: 'roller'}
+supports_data = {0: 'pin', 3: 'roller'}
+supports = [classes.Support(node_index, support_type) for node_index, support_type in supports_data.items()]
 
-# Define loads (in the format: (node, force_x, force_y))
-loads = [(1, 0, -20), (3, 0, -10)]
+# Define loads
+loads_data = [(2, 0, -100)]
+loads = [classes.Load(node_index, force_x, force_y) for node_index, force_x, force_y in loads_data]
 
-# Plot truss
-for connection in connections:
-    node1 = nodes[connection[0]]
-    node2 = nodes[connection[1]]
-    plt.plot([node1[0], node2[0]], [node1[1], node2[1]], 'k-')
-
-# Plot supports
-for node_index, support_type in supports.items():
-    node = nodes[node_index]
-    if support_type == 'roller':
-        plt.plot(node[0], node[1], 'ro')
-    elif support_type == 'pin':
-        plt.plot(node[0], node[1], 'bo')
-
-# Plot loads
-for load in loads:
-    node = nodes[load[0]]
-    plt.arrow(node[0], node[1], load[1]/10, load[2]/10, head_width=0.1, head_length=0.1, fc='g', ec='g')
-
-plt.xlabel('X-Axis')
-plt.ylabel('Y-Axis')
-plt.title('Truss Structure')
-plt.grid(True)
-plt.gca().set_aspect('equal', adjustable='box')
-plt.show()
+functions.plot_truss_structure(connections, supports, nodes, loads)
