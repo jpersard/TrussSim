@@ -13,4 +13,5 @@ with open(truss_data, 'r') as file:
 nodes, connections, supports, loads = functions.import_json(json_data)
 
 
+# Plot the truss structure with loads and forces
 functions.plot_truss_structure(connections, supports, nodes, loads)
