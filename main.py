@@ -22,19 +22,19 @@ class Load:
         self.force_y = force_y
 
 # define truss nodes
-nodes_data = [(0, 0), (1, 1), (2, 0), (3, 1), (4, 0)]
+nodes_data = [(0, 0), (3, 2), (3, 0), (6, 0)]
 nodes = [Node(x, y) for x, y in nodes_data]
 
 # define connections
-connections_data = [(0, 1),(0, 2), (1, 2), (2, 3),(2, 4), (3, 4)]
+connections_data = [(0, 1),(0, 2), (1, 2), (1, 3),(2, 3)]
 connections = [Connection(nodes[i], nodes[j]) for i, j in connections_data]
 
 # Define supports
-supports_data = {0: 'pin', 4: 'roller'}
+supports_data = {0: 'pin', 3: 'roller'}
 supports = [Support(node_index, support_type) for node_index, support_type in supports_data.items()]
 
 # Define loads
-loads_data = [(1, 0, -20), (3, 0, -10), (1, -10, 0)]
+loads_data = [(2, 0, -100)]
 loads = [Load(node_index, force_x, force_y) for node_index, force_x, force_y in loads_data]
 
 
