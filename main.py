@@ -1,62 +1,61 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
+class Node:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-# define dimensions
-dim = 2
+class Connection:
+    def __init__(self, node1, node2):
+        self.node1 = node1
+        self.node2 = node2
+
+class Support:
+    def __init__(self, node_index, support_type):
+        self.node_index = node_index
+        self.support_type = support_type
+
+class Load:
+    def __init__(self, node_index, force_x, force_y):
+        self.node_index = node_index
+        self.force_x = force_x
+        self.force_y = force_y
 
 # define truss nodes
-nodes = np.array([[0, 0], [1, 1], [2, 0], [3, 1], [4, 0]])
+nodes_data = [(0, 0), (1, 1), (2, 0), (3, 1), (4, 0)]
+nodes = [Node(x, y) for x, y in nodes_data]
 
 # define connections
-connections = [(0, 1),(0, 2), (1, 2), (2, 3),(2, 4), (3, 4)]
+connections_data = [(0, 1),(0, 2), (1, 2), (2, 3),(2, 4), (3, 4)]
+connections = [Connection(nodes[i], nodes[j]) for i, j in connections_data]
 
 # Define supports
-supports = {0: 'pin', 4: 'roller'}
+supports_data = {0: 'pin', 4: 'roller'}
+supports = [Support(node_index, support_type) for node_index, support_type in supports_data.items()]
 
-# Define loads (in the format: (node, force_x, force_y))
-loads = [(1, 0, -20), (3, 0, -10)]
+# Define loads
+loads_data = [(1, 0, -20), (3, 0, -10), (1, -10, 0)]
+loads = [Load(node_index, force_x, force_y) for node_index, force_x, force_y in loads_data]
 
-# Calculate reactions
-reaction_forces = np.zeros((len(nodes), dim))  # Initialize array to store reaction forces
-
-# Loop through supports to calculate reactions
-for node_index, support_type in supports.items():
-    if support_type == 'pin':
-        reaction_forces[node_index] = [0, 0]  # Pin support does not produce reaction forces
-    elif support_type == 'roller':
-        connected_connections = [connection for connection in connections if node_index in connection]
-        for connection in connected_connections:
-            other_node_index = connection[0] if connection[0] != node_index else connection[1]
-            dx = nodes[other_node_index][0] - nodes[node_index][0]
-            dy = nodes[other_node_index][1] - nodes[node_index][1]
-            length = np.sqrt(dx**2 + dy**2)
-            angle = np.arctan2(dy, dx)
-            reaction_forces[node_index][0] += loads[0][2] * np.cos(angle)  # Reaction force in x-direction
-            reaction_forces[node_index][1] += loads[0][2] * np.sin(angle)  # Reaction force in y-direction
-
-# Print reaction forces
-for node_index, reaction_force in enumerate(reaction_forces):
-    print(f"Node {node_index}: Reaction Force = {reaction_force}")
 
 # Plot truss
 for connection in connections:
-    node1 = nodes[connection[0]]
-    node2 = nodes[connection[1]]
-    plt.plot([node1[0], node2[0]], [node1[1], node2[1]], 'k-')
+    node1 = connection.node1
+    node2 = connection.node2
+    plt.plot([node1.x, node2.x], [node1.y, node2.y], 'k-')
 
 # Plot supports
-for node_index, support_type in supports.items():
-    node = nodes[node_index]
-    if support_type == 'roller':
-        plt.plot(node[0], node[1], 'ro')
-    elif support_type == 'pin':
-        plt.plot(node[0], node[1], 'bo')
+for support in supports:
+    node = nodes[support.node_index]
+    if support.support_type == 'roller':
+        plt.plot(node.x, node.y, 'ro')
+    elif support.support_type == 'pin':
+        plt.plot(node.x, node.y, 'bo')
 
 # Plot loads
 for load in loads:
-    node = nodes[load[0]]
-    plt.arrow(node[0], node[1], load[1]/10, load[2]/10, head_width=0.1, head_length=0.1, fc='g', ec='g')
+    node = nodes[load.node_index]
+    plt.arrow(node.x, node.y, load.force_x/10, load.force_y/10, head_width=0.1, head_length=0.1, fc='g', ec='g')
 
 plt.xlabel('X-Axis')
 plt.ylabel('Y-Axis')
