@@ -5,8 +5,8 @@ import functions
 # Later to be set in GUI
 do_import = True
 do_reaction = True
-do_print_all = True
-do_plot_truss = True
+do_print_all = False
+do_plot_truss = False
 
 # Import truss data from JSON
 if do_import:
@@ -19,6 +19,13 @@ if do_reaction:
     reaction_forces = []
     for support in supports:
         reaction_forces.extend(support.initialize_reaction_forces())
+
+    # Statically determined
+    if 2 * len(nodes) != len(reaction_forces) + len(connections):
+        print("Truss is not statically determined!")
+        input("Press Enter to continue...")
+        exit()
+
 
     #coefficients_matrix = np.array([[1, 0, 0], 
     #                                [0, 1, 1], 
