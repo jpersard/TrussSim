@@ -24,56 +24,10 @@ for support in supports:
 for load in loads:
     print(load)
 
-
-def build_equation_system(supports, loads, nodes):
-    num_unknowns = len(supports) + len([support for support in supports if support.support_type == 'pin'])  # Number of unknowns
-    num_loads = len(nodes)  # Number of nodes
-    A = np.zeros((3, num_unknowns))  # Coefficient matrix
-    b = np.zeros(3)  # Constant matrix
-
-    # Sum of forces in x-direction equation
-    row_index = 0
-    for i, support in enumerate(supports):
-        if support.support_type == 'pin':
-            A[row_index, i] = 1  # Coefficient for Rx
-        elif support.support_type == 'roller':
-            A[row_index, i] = 0  # Coefficient for Rx (for roller support)
-    for load in loads:
-        A[row_index, len(supports) + load.node_index] = 1  # Coefficient for Rx
-        b[row_index] -= load.force_x  # External load in x-direction
-    row_index += 1
-
-    # Sum of forces in y-direction equation
-    for i, support in enumerate(supports):
-        if support.support_type == 'pin':
-            A[row_index, i] = 0  # Coefficient for Ry
-        elif support.support_type == 'roller':
-            A[row_index, i] = 1  # Coefficient for Ry
-    for load in loads:
-        A[row_index, len(supports) + load.node_index] = 1  # Coefficient for Ry
-        b[row_index] -= load.force_y  # External load in y-direction
-    row_index += 1
-
-    # Sum of moments around origin equation
-    for i, support in enumerate(supports):
-        A[row_index, i] = nodes[support.node_index].y  # Coefficient for Rx
-        A[row_index, len(supports) + i] = -nodes[support.node_index].x  # Coefficient for Ry
-        b[row_index] -= nodes[support.node_index].x * 0  # Moment due to Ry (since it's 0 for roller)
-    for load in loads:
-        A[row_index, len(supports) + load.node_index] = nodes[load.node_index].y  # Coefficient for Rx
-        A[row_index, 2 * num_loads + load.node_index] = -nodes[load.node_index].x  # Coefficient for Ry
-        b[row_index] -= nodes[load.node_index].x * load.force_y  # Moment due to external load
-    return A, b
-
-# Build the equation system
-A, b = build_equation_system(supports, loads, nodes)
-
-# Solve the equation system
-solution = np.linalg.solve(A, b)
-
-print("Solution (Reaction Forces):")
-for i, support in enumerate(supports):
-    print(f"Support {support.node_index}: Ry = {solution[i]}")
+# Calculate reaction forces
+coefficients_matrix = np.array([[1, 0, 0, 0, 0], [0, 1, 1, 0, 1], [0, 0, 6, 0, 3]])
+constants_vector = np.array([0, 0, 0])
+reaction_forces = np.linalg.solve(coefficients_matrix, constants_vector)
 
 # Plot the truss structure with loads and forces
-functions.plot_truss_structure(connections, supports, nodes, loads, reaction_forces)
+functions.plot_truss_structure(connections, supports, nodes, loads)

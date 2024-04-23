@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import classes # type: ignore
 
 
-def plot_truss_structure(connections, supports, nodes, loads, reaction_forces):
+def plot_truss_structure(connections, supports, nodes, loads):
     """
     Plot the truss structure.
 
