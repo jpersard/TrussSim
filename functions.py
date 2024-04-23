@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import classes # type: ignore
+import json
 
 
 def plot_truss_structure(connections, supports, nodes, loads):
@@ -43,16 +44,19 @@ def plot_truss_structure(connections, supports, nodes, loads):
     plt.gca().set_aspect('equal', adjustable='box')
     plt.show()
 
-def import_json(truss_data):
+def import_json(file_path):
     """
     Import truss data from JSON.
 
     Args:
-        truss_data (dict): Dictionary containing truss data in JSON format.
+        file_path (str): Path to the JSON file containing truss data.
 
     Returns:
         tuple: A tuple containing lists of nodes, connections, supports, and loads.
     """
+    with open(file_path) as file:
+        truss_data = json.load(file)
+
     # Extract truss data from JSON
     nodes_data = truss_data.get('nodes', [])
     connections_data = truss_data.get('connections', [])
@@ -66,12 +70,9 @@ def import_json(truss_data):
     connections = [classes.Connection(nodes[i], nodes[j]) for i, j in connections_data]
 
     # Create Support instances
-    #supports = [classes.Support(int(node_index), support_type) for node_index, support_type in supports_data.items()]
     supports = [classes.Support(nodes[int(node_index)], support_type) for node_index, support_type in supports_data.items()]
 
-
     # Create Load instances
-    #loads = [classes.Load(node_index, force_x, force_y) for node_index, force_x, force_y in loads_data]
     loads = [classes.Load(nodes[node_index], force_x, force_y) for node_index, force_x, force_y in loads_data]
 
     return nodes, connections, supports, loads

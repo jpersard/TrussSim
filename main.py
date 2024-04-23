@@ -1,18 +1,12 @@
 # main.py
-import matplotlib.pyplot as plt
 import functions
 import classes
-import json
 import numpy as np
 
 # Import truss data from JSON
 if 1:
-    truss_data = r'C:\dev\TrussSim\truss_data.json'
-
-    with open(truss_data) as file:
-        json_data = json.load(file)
-
-    nodes, connections, supports, loads = functions.import_json(json_data)
+    json_path = r'C:\dev\TrussSim\truss_data.json'
+    nodes, connections, supports, loads = functions.import_json(json_path)
 
 # Print all objects
 if 1:
