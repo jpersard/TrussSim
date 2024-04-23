@@ -53,7 +53,26 @@ class Support:
         return f"Support at node {self.node_index}, type: {self.support_type}"
 
 
-class Load:
+class Force:
+    """Class representing a force applied to a node in the truss structure."""
+    def __init__(self, node_index, force_x, force_y):
+        """
+        Initialize a Force object.
+
+        Parameters:
+            node_index (int): Index of the node where the force is applied.
+            force_x (float): Magnitude of the force in the x-direction.
+            force_y (float): Magnitude of the force in the y-direction.
+        """
+        self.node_index = node_index
+        self.force_x = force_x
+        self.force_y = force_y
+
+    def __str__(self):
+        return f"Force applied to node {self.node_index}, force: ({self.force_x}, {self.force_y})"
+
+
+class Load(Force):
     """Class representing a load applied to a node in the truss structure."""
     def __init__(self, node_index, force_x, force_y):
         """
@@ -64,10 +83,19 @@ class Load:
             force_x (float): Magnitude of the force in the x-direction.
             force_y (float): Magnitude of the force in the y-direction.
         """
-        self.node_index = node_index
-        self.force_x = force_x
-        self.force_y = force_y
+        super().__init__(node_index, force_x, force_y)
 
-    def __str__(self):
-        return f"Load applied to node {self.node_index}, force: ({self.force_x}, {self.force_y})"
+
+class Reaction(Force):
+    """Class representing a reaction force at a support node in the truss structure."""
+    def __init__(self, node_index, force_x, force_y):
+        """
+        Initialize a Reaction object.
+
+        Parameters:
+            node_index (int): Index of the node where the reaction force is applied.
+            force_x (float): Magnitude of the reaction force in the x-direction.
+            force_y (float): Magnitude of the reaction force in the y-direction.
+        """
+        super().__init__(node_index, force_x, force_y)
     

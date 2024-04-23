@@ -25,9 +25,10 @@ for load in loads:
     print(load)
 
 # Calculate reaction forces
-coefficients_matrix = np.array([[1, 0, 0, 0, 0], [0, 1, 1, 0, 1], [0, 0, 6, 0, 3]])
-constants_vector = np.array([0, 0, 0])
+coefficients_matrix = np.array([[1, 0, 0], [0, 1, 1], [0, 0, 6]])
+constants_vector = np.array([0, 100, 100*3])
 reaction_forces = np.linalg.solve(coefficients_matrix, constants_vector)
+print(reaction_forces)
 
 # Plot the truss structure with loads and forces
 functions.plot_truss_structure(connections, supports, nodes, loads)
