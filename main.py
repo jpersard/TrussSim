@@ -5,7 +5,7 @@ import functions
 # Later to be set in GUI
 do_import = True
 do_reaction = True
-do_print_all = False
+do_print_all = True
 do_plot_truss = False
 
 # Import truss data from JSON
@@ -25,15 +25,6 @@ if do_reaction:
         print("Truss is not statically determined!")
         input("Press Enter to continue...")
         exit()
-
-
-    #coefficients_matrix = np.array([[1, 0, 0], 
-    #                                [0, 1, 1], 
-    #                               [0, 0, 6]])
-    #constants_vector = np.array([0, 
-    #                             100, 
-    #                             100*3])
-    #reaction_forces = np.linalg.solve(coefficients_matrix, constants_vector)
 
 # Print all objects
 if do_print_all:

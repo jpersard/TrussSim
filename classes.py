@@ -35,10 +35,12 @@ class Connection:
         self.node1 = node1
         self.node2 = node2
         self.name = node1.name + node2.name  # Generate name based on connected nodes
+        self.length = math.sqrt((node2.x - node1.x)**2 + (node2.y - node1.y)**2)  # Calculate length
+        self.angle_degrees = math.degrees(math.atan2(node2.y - node1.y, node2.x - node1.x))  # Calculate angle in degrees
 
     def __str__(self):
-        return f"Connection {self.name} between {self.node1.name} and {self.node2.name}"
-
+        return f"Connection {self.name} between {self.node1.name} and {self.node2.name} with length {self.length} and angle {self.angle_degrees} degrees"
+    
 class Support:
     """Class representing a support node in the truss structure."""
     def __init__(self, node, support_type):
