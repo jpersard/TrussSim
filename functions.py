@@ -76,3 +76,62 @@ def import_json(file_path):
     loads = [classes.Load(nodes[node_index], force_x, force_y) for node_index, force_x, force_y in loads_data]
 
     return nodes, connections, supports, loads
+
+def print_all(nodes, connections, supports, loads, reaction_forces):
+    """
+    Print all truss data.
+
+    Parameters:
+        nodes (list): List of Node objects representing nodes in the truss structure.
+        connections (list): List of Connection objects representing connections between nodes.
+        supports (list): List of Support objects representing support nodes.
+        loads (list): List of Load objects representing loads applied to nodes.
+        reaction_forces (list): List of Reaction objects representing reaction forces.
+    """
+    print("Nodes:")
+    for node in nodes:
+        print(node)
+    print("\n")
+
+    print("Connections:")
+    for connection in connections:
+        print(connection)
+    print("\n")
+
+    print("Supports:")
+    for support in supports:
+        print(support)
+    print("\n")
+
+    print("Loads:")
+    for load in loads:
+        print(load)
+    print("\n")
+
+    print("Reaction forces:")
+    for force in reaction_forces:
+        print(force)
+    print("\n")
+
+def calculate_reaction_forces(supports):
+    """
+    Calculate reaction forces for the supports.
+
+    Parameters:
+        supports (list): List of Support objects representing support nodes.
+
+    Returns:
+        list: List of Reaction objects representing reaction forces.
+    """
+    reaction_forces = []
+
+    for support in supports:
+        if support.support_type == 'pin':
+            # For pin support, create a Reaction object with x and y components
+            reaction_force = classes.Reaction(support.node, 1, 1)
+        elif support.support_type == 'roller':
+            # For roller support, create a Reaction object with only y component
+            reaction_force = classes.Reaction(support.node, 0, 1)
+        reaction_forces.append(reaction_force)
+
+    return reaction_forces
