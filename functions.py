@@ -25,11 +25,11 @@ def plot_truss_structure(connections, supports, nodes, loads):
 
     # Plot supports
     for support in supports:
-        node = support.node  # Access the node attribute
-        if support.support_type == 'roller':
-            plt.plot(node.x, node.y, 'ro')
-        elif support.support_type == 'pin':
-            plt.plot(node.x, node.y, 'bo')
+            node = support.node  # Access the node attribute
+            if support.support_type == 'roller':
+                plt.plot(node.x, node.y, marker='o', markersize=10, markerfacecolor='none', markeredgewidth=2, markeredgecolor='r')
+            elif support.support_type == 'pin':
+                plt.plot(node.x, node.y, marker='o', markersize=10, markerfacecolor='none', markeredgewidth=2, markeredgecolor='b')
 
     # Plot loads
     for load in loads:
