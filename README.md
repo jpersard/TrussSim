@@ -7,8 +7,11 @@ Roadmap
 -------
 
 *   Define input format
+    *  Input as JSON - Done
+    *  Input by GUI - TBD
 *   Implement formulas and equations
 *   2D-Simulation
 *   3D-Simulation
 *   Visualization
+    *  Simple Plot for Visualization - Done
 *   Graphical User Interface
