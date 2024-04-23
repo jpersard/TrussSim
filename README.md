@@ -10,6 +10,7 @@ Roadmap
     *  Input as JSON - Done
     *  Input by GUI - TBD
 *   Implement formulas and equations
+    *   reaction forces
 *   2D-Simulation
 *   3D-Simulation
 *   Visualization

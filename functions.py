@@ -1,11 +1,12 @@
+# functions.py
 # Functions for TrussSim
 
-
+import numpy as np
 import matplotlib.pyplot as plt
 import classes # type: ignore
 
 
-def plot_truss_structure(connections, supports, nodes, loads):
+def plot_truss_structure(connections, supports, nodes, loads, reaction_forces):
     """
     Plot the truss structure.
 
@@ -14,6 +15,7 @@ def plot_truss_structure(connections, supports, nodes, loads):
         supports (list): List of Support objects representing support nodes.
         nodes (list): List of Node objects representing nodes in the truss structure.
         loads (list): List of Load objects representing loads applied to nodes.
+        reaction_forces (tuple): Tuple containing reaction forces.
     """
     # Plot truss
     for connection in connections:
@@ -42,6 +44,7 @@ def plot_truss_structure(connections, supports, nodes, loads):
     plt.show()
 
 def import_json(truss_data):
+    
     """
     Import truss data from JSON.
 

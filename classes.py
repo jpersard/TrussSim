@@ -1,3 +1,4 @@
+# classes.py
 # Classes for TrussSim
 
 
@@ -69,3 +70,4 @@ class Load:
 
     def __str__(self):
         return f"Load applied to node {self.node_index}, force: ({self.force_x}, {self.force_y})"
+    
