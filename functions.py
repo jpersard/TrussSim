@@ -2,6 +2,7 @@
 # Functions for TrussSim
 
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 import classes # type: ignore
 import json
@@ -18,6 +19,11 @@ def plot_truss_structure(connections, supports, nodes, loads):
         loads (list): List of Load objects representing loads applied to nodes.
         reaction_forces (tuple): Tuple containing reaction forces.
     """
+    # Plot nodes
+    for node in nodes:
+        plt.plot(node.x, node.y, 'ko')  # Black dot at node coordinates
+        plt.text(node.x + 0.1, node.y + 0.1, node.name, fontsize=12) # Name of node
+
     # Plot truss
     for connection in connections:
         node1 = connection.node1
@@ -35,7 +41,12 @@ def plot_truss_structure(connections, supports, nodes, loads):
     # Plot loads
     for load in loads:
         node = load.node  # Access the node attribute
-        plt.arrow(node.x, node.y, load.force_x/10, load.force_y/10, head_width=0.1, head_length=0.1, fc='g', ec='g')
+        angle_radians = math.radians(load.angle_degrees)  # Convert angle to radians
+        dx = load.magnitude * math.cos(angle_radians)  # Calculate change in x
+        dy = load.magnitude * math.sin(angle_radians)  # Calculate change in y
+        plt.arrow(node.x, node.y, dx/10, dy/10, linewidth=4, head_width=0.1, head_length=0.1, fc='r', ec='r')
+
+
 
     plt.xlabel('X-Axis')
     plt.ylabel('Y-Axis')
@@ -73,7 +84,13 @@ def import_json(file_path):
     supports = [classes.Support(nodes[int(node_index)], support_type) for node_index, support_type in supports_data.items()]
 
     # Create Load instances
-    loads = [classes.Load(nodes[node_index], force_x, force_y) for node_index, force_x, force_y in loads_data]
+    # Create Load instances
+    loads = []
+    for load_data in loads_data:
+        node_index, magnitude, angle_degrees = load_data
+        node = nodes[node_index]
+        load = classes.Load(node, magnitude, angle_degrees)
+        loads.append(load)
 
     return nodes, connections, supports, loads
 

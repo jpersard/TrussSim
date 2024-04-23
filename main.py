@@ -1,14 +1,12 @@
 # main.py
 import functions
-import classes
-import numpy as np
 
 # Variables to enable modules
 # Later to be set in GUI
 do_import = True
 do_reaction = True
 do_print_all = True
-do_plot_truss = False
+do_plot_truss = True
 
 # Import truss data from JSON
 if do_import:
@@ -17,7 +15,10 @@ if do_import:
 
 # Calculate reaction forces
 if do_reaction:
-    reaction_forces = functions.calculate_reaction_forces(supports)
+    # Initialize reaction forces
+    reaction_forces = []
+    for support in supports:
+        reaction_forces.extend(support.initialize_reaction_forces())
 
     #coefficients_matrix = np.array([[1, 0, 0], 
     #                                [0, 1, 1], 
