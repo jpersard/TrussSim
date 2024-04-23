@@ -25,7 +25,7 @@ def plot_truss_structure(connections, supports, nodes, loads):
 
     # Plot supports
     for support in supports:
-        node = nodes[support.node_index]
+        node = support.node  # Access the node attribute
         if support.support_type == 'roller':
             plt.plot(node.x, node.y, 'ro')
         elif support.support_type == 'pin':
@@ -33,7 +33,7 @@ def plot_truss_structure(connections, supports, nodes, loads):
 
     # Plot loads
     for load in loads:
-        node = nodes[load.node_index]
+        node = load.node  # Access the node attribute
         plt.arrow(node.x, node.y, load.force_x/10, load.force_y/10, head_width=0.1, head_length=0.1, fc='g', ec='g')
 
     plt.xlabel('X-Axis')
@@ -44,7 +44,6 @@ def plot_truss_structure(connections, supports, nodes, loads):
     plt.show()
 
 def import_json(truss_data):
-    
     """
     Import truss data from JSON.
 
@@ -60,16 +59,19 @@ def import_json(truss_data):
     supports_data = truss_data.get('supports', {})
     loads_data = truss_data.get('loads', [])
 
-    # Create Node instances
-    nodes = [classes.Node(x, y) for x, y in nodes_data]
+    # Create Node instances with names A, B, C...
+    nodes = [classes.Node(chr(65 + i), x, y) for i, (x, y) in enumerate(nodes_data)]
 
     # Create Connection instances
     connections = [classes.Connection(nodes[i], nodes[j]) for i, j in connections_data]
 
     # Create Support instances
-    supports = [classes.Support(int(node_index), support_type) for node_index, support_type in supports_data.items()]
+    #supports = [classes.Support(int(node_index), support_type) for node_index, support_type in supports_data.items()]
+    supports = [classes.Support(nodes[int(node_index)], support_type) for node_index, support_type in supports_data.items()]
+
 
     # Create Load instances
-    loads = [classes.Load(node_index, force_x, force_y) for node_index, force_x, force_y in loads_data]
+    #loads = [classes.Load(node_index, force_x, force_y) for node_index, force_x, force_y in loads_data]
+    loads = [classes.Load(nodes[node_index], force_x, force_y) for node_index, force_x, force_y in loads_data]
 
     return nodes, connections, supports, loads

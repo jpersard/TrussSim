@@ -39,10 +39,10 @@ reaction_forces = []
 for support in supports:
     # For pin support, create a Reaction object with x and y components
     if support.support_type == 'pin':
-        reaction_force = classes.Reaction(support.node_index, 1, 1)
+        reaction_force = classes.Reaction(support.node, 1, 1)
     # For roller support, create a Reaction object with only y component
     elif support.support_type == 'roller':
-        reaction_force = classes.Reaction(support.node_index, 0, 1)
+        reaction_force = classes.Reaction(support.node, 0, 1)
     reaction_forces.append(reaction_force)
 
 #coefficients_matrix = np.array([[1, 0, 0], 
@@ -59,5 +59,5 @@ for force in reaction_forces:
 print("\n")
 
 # Plot the truss structure with loads and forces
-if 0:
+if 1:
     functions.plot_truss_structure(connections, supports, nodes, loads)
