@@ -45,6 +45,7 @@ def plot_truss_structure(connections, supports, nodes, loads):
         dx = load.magnitude * math.cos(angle_radians)  # Calculate change in x
         dy = load.magnitude * math.sin(angle_radians)  # Calculate change in y
         plt.arrow(node.x, node.y, dx/10, dy/10, linewidth=4, head_width=0.1, head_length=0.1, fc='r', ec='r')
+        plt.text(node.x + dx/10 + 0.1, node.y + dy/10 + 0.1, load.magnitude, fontsize=12, color='r')
 
 
 
