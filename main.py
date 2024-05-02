@@ -6,8 +6,8 @@ import numpy as np
 # Variables to enable modules
 # Later to be set in GUI
 do_import = True
-do_calculation = False
-do_print_all = False
+do_calculation = True
+do_print_all = True
 do_plot_truss = True
 
 # Import truss data from JSON
@@ -29,14 +29,18 @@ if do_calculation:
         exit()
 
     # Initialize the coefficient matrix with zeros
-    coefficient_matrix = np.zeros((2 * len(nodes), 2 * len(nodes)))
+    coefficient_matrix_rows = 2 * len(nodes)    
+    coefficient_matrix_columns = 2 * len(nodes)
+
+    coefficient_matrix = np.zeros((coefficient_matrix_rows, coefficient_matrix_columns))
+
     # Populate the coefficient matrix based on connections
     # ...
 
     # Print the coefficient matrix
     print(coefficient_matrix)
 
-    if False:
+    if True:
         coefficient_matrix = np.array([[1,  0,  0,  0.83,   1,   0,     0,  0], 
                                     [0,  1,  0,  0.55,   1,   0,     0,  0], 
                                    [0,  0,  0,  0.83,   0,  -1, -0.55,  0], 
