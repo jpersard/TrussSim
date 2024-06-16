@@ -1,29 +1,66 @@
-import matplotlib.pyplot as plt
-import classes # type: ignore
-import functions # type: ignore
-import json
+# main.py
+import functions
+import numpy as np
 
+
+# Variables to enable modules
+# Later to be set in GUI
+do_import = True
+do_calculation = True
+do_print_all = True
+do_plot_truss = True
 
 # Import truss data from JSON
-truss_data = r'C:\dev\TrussSim\truss_data.json'
+if do_import:
+    json_path = r'C:\dev\TrussSim\truss_data.json'
+    nodes, connections, supports, loads = functions.import_json(json_path)
 
-with open(truss_data) as file:
-    json_data = json.load(file)
+# Calculate forces
+if do_calculation:
+    # Initialize reaction forces
+    reaction_forces = []
+    for support in supports:
+        reaction_forces.extend(support.initialize_reaction_forces())
 
-nodes, connections, supports, loads = functions.import_json(json_data)
+    # Statically determined
+    if 2 * len(nodes) != len(reaction_forces) + len(connections):
+        print("Truss is not statically determined!")
+        input("Press Enter to continue...")
+        exit()
 
-for node in nodes:
-    print(node)
+    # Initialize the coefficient matrix with zeros
+    coefficient_matrix_rows = 2 * len(nodes)    
+    coefficient_matrix_columns = 2 * len(nodes)
 
-for connection in connections:
-    print(connection)
+    coefficient_matrix = np.zeros((coefficient_matrix_rows, coefficient_matrix_columns))
 
-for support in supports:
-    print(support)
+    # Populate the coefficient matrix based on connections
+    # ...
 
-for load in loads:
-    print(load)
+    # Print the coefficient matrix
+    print(coefficient_matrix)
 
+    if True:
+        coefficient_matrix = np.array([ [1,  0,  0,  0.83,   1,   0,     0,  0], 
+                                        [0,  1,  0,  0.55,   1,   0,     0,  0], 
+                                        [0,  0,  0,  0.83,   0,  -1, -0.55,  0], 
+                                        [0,  0,  0,  0.55,   0,  -1, -0.55,  0], 
+                                        [0,  0,  0,     0,   1,   0,     0,  1], 
+                                        [0,  0,  0,     0,   0,  -1,     0,  0],
+                                        [0,  0,  0,     0,   0,   0,  0.83,  1], 
+                                        [0,  0,  1,     0,   0,   0, -0.55,  0] ])
+
+        # Constant matrix
+        constant_matrix = np.array([0, 0, 0, 0, 0, -100, 0, 0])
+
+        # Solve for the variables
+        variables = np.linalg.solve(coefficient_matrix, constant_matrix)
+        print(variables)
+
+# Print all objects
+if do_print_all:
+    functions.print_all(nodes, connections, supports, loads, reaction_forces)
 
 # Plot the truss structure with loads and forces
-functions.plot_truss_structure(connections, supports, nodes, loads)
+if do_plot_truss:
+    functions.plot_truss_structure(connections, supports, nodes, loads)
