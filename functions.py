@@ -103,7 +103,6 @@ def import_json(file_path):
     supports = [classes.Support(nodes[int(node_index)], support_type) for node_index, support_type in supports_data.items()]
 
     # Create Load instances
-    # Create Load instances
     loads = []
     for load_data in loads_data:
         node_index, magnitude, angle_degrees = load_data
