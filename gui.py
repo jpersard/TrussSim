@@ -4,7 +4,29 @@ import functions
 import classes
 
 class TrussApp:
+    """
+    A GUI application for simulating and analyzing truss structures.
+
+    Attributes:
+        root (tk.Tk): The root window of the Tkinter application.
+        nodes (list): List to store nodes of the truss.
+        connections (list): List to store connections between nodes.
+        supports (list): List to store supports of the truss.
+        loads (list): List to store loads applied to the truss.
+        reaction_forces (list): List to store calculated reaction forces.
+        frame (ttk.Frame): Main frame of the application.
+        import_button (ttk.Button): Button to import truss data.
+        process_button (ttk.Button): Button to process truss data.
+        output_textbox (scrolledtext.ScrolledText): Textbox to display output and logs.
+    """
+
     def __init__(self, root):
+        """
+        Initialize the TrussApp with the root window and create the GUI.
+
+        Args:
+            root (tk.Tk): The root window of the Tkinter application.
+        """
         self.root = root
         self.root.title("Truss Simulation")
 
@@ -19,6 +41,9 @@ class TrussApp:
         self.create_widgets()
 
     def create_widgets(self):
+        """
+        Create and layout the GUI elements in the main application window.
+        """
         self.frame = ttk.Frame(self.root, padding="10")
         self.frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 
@@ -27,8 +52,6 @@ class TrussApp:
 
         self.process_button = ttk.Button(self.frame, text="Process Truss", command=self.process_truss)
         self.process_button.grid(row=1, column=0, padx=10, pady=10)
-
-        
 
         # Textbox for printing output
         self.output_textbox = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD, width=80, height=20)
@@ -42,6 +65,9 @@ class TrussApp:
         self.frame.rowconfigure(2, weight=1)
 
     def import_data(self):
+        """
+        Open a file dialog to select a JSON file and import truss data from it.
+        """
         file_path = filedialog.askopenfilename(title="Select JSON Data File", filetypes=[("JSON Files", "*.json")])
         if file_path:
             try:
@@ -52,6 +78,9 @@ class TrussApp:
                 self.output_textbox.insert(tk.END, f"Error importing data from {file_path}: {str(e)}\n", "error")
 
     def process_truss(self):
+        """
+        Process the truss structure to calculate forces and display the results.
+        """
         if not self.nodes or not self.connections or not self.supports or not self.loads:
             messagebox.showwarning("Process Truss", "Please import or add data first.")
             return
@@ -71,7 +100,7 @@ class TrussApp:
 
     def print_all(self):
         """
-        Print all truss data in the output textbox.
+        Print all truss data (nodes, connections, supports, loads, and reaction forces) in the output textbox.
         """
         self.output_textbox.insert(tk.END, "Nodes:\n")
         for node in self.nodes:
@@ -109,3 +138,7 @@ class TrussApp:
         self.output_textbox.insert(tk.END, "\n")
 
 
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TrussApp(root)
+    app.main()

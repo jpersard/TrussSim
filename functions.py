@@ -4,9 +4,8 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import classes # type: ignore
+import classes  # type: ignore
 import json
-
 
 def plot_truss_structure(connections, supports, nodes, loads, reaction_forces):
     """
