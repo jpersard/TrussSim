@@ -53,6 +53,9 @@ class TrussApp:
         self.process_button = ttk.Button(self.frame, text="Process Truss", command=self.process_truss)
         self.process_button.grid(row=1, column=0, padx=10, pady=10)
 
+        self.save_button = ttk.Button(self.frame, text="Save Calculated Values", command=self.save_calculated_values_dialog)
+        self.save_button.grid(row=3, column=0, padx=10, pady=10)
+
         # Textbox for printing output
         self.output_textbox = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD, width=80, height=20)
         self.output_textbox.grid(row=2, column=0, padx=10, pady=10, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -136,6 +139,18 @@ class TrussApp:
             elif isinstance(force, classes.ReactionY):
                 self.output_textbox.insert(tk.END, f"Reaction force in the y-direction at node {force.node.name}, magnitude: {force_magnitude_rounded}\n")
         self.output_textbox.insert(tk.END, "\n")
+
+    def save_calculated_values_dialog(self):
+            """
+            Open a file dialog to select a location to save the calculated values.
+            """
+            file_path = filedialog.asksaveasfilename(title="Save Calculated Values As", filetypes=[("JSON Files", "*.json")])
+            if file_path:
+                try:
+                    functions.save_calculated_values(self.nodes, self.connections, self.supports, self.loads, self.reaction_forces, file_path)
+                    self.output_textbox.insert(tk.END, f"Calculated values saved to {file_path}\n")
+                except Exception as e:
+                    self.output_textbox.insert(tk.END, f"Error saving calculated values: {str(e)}\n", "error")
 
 
 if __name__ == "__main__":

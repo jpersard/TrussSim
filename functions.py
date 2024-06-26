@@ -262,3 +262,54 @@ def calculate_forces(nodes, connections, supports, loads):
         reaction_force.magnitude = variables[len(connections) + reaction_forces.index(reaction_force)]
 
     return connections, reaction_forces
+
+def save_calculated_values(nodes, connections, supports, loads, reaction_forces, file_path):
+    """
+    Save all the calculated values to a file.
+
+    Parameters:
+        nodes (list): List of Node objects representing nodes in the truss structure.
+        connections (list): List of Connection objects representing connections between nodes.
+        supports (list): List of Support objects representing support nodes.
+        loads (list): List of Load objects representing loads applied to nodes.
+        reaction_forces (list): List of Reaction objects representing reaction forces.
+        file_path (str): Path to the file where data will be saved.
+    """
+    data = {
+        "nodes": [{"name": node.name, "x": node.x, "y": node.y} for node in nodes],
+        "connections": [
+            {
+                "node1": connection.node1.name,
+                "node2": connection.node2.name,
+                "length": round(connection.length, 2),
+                "angle_degrees": round(connection.angle_degrees, 2),
+                "force": {
+                    "magnitude": round(connection.force.magnitude, 2),
+                    "angle_degrees": round(connection.force.angle_degrees, 2),
+                } if hasattr(connection, 'force') and isinstance(connection.force, classes.Force) else None
+            } for connection in connections
+        ],
+        "supports": [
+            {
+                "node": support.node.name,
+                "support_type": support.support_type
+            } for support in supports
+        ],
+        "loads": [
+            {
+                "node": load.node.name,
+                "magnitude": load.magnitude,
+                "angle_degrees": load.angle_degrees
+            } for load in loads
+        ],
+        "reaction_forces": [
+            {
+                "node": force.node.name,
+                "magnitude": round(force.magnitude, 2),
+                "direction": "x" if isinstance(force, classes.ReactionX) else "y"
+            } for force in reaction_forces
+        ]
+    }
+
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
