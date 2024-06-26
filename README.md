@@ -1,11 +1,108 @@
-Python for Engineers 2024: Project
-==================================
+# Truss Simulation Application
 
-Truss: graphical representation of the truss, colour coding of forces, calculation of forces, etc.
+## Overview
+The Truss Simulation Application is a graphical user interface (GUI) tool designed to simulate and analyze truss structures. It allows users to import truss data from a JSON file, process the truss to calculate forces, and visualize the truss structure with various forces and supports.
 
-Roadmap
--------
+## Features
+- **Import Truss Data**: Load truss data from a JSON file.
+- **Process Truss**: Calculate forces within the truss and identify reaction forces at supports.
+- **Visualization**: Display the truss structure, including nodes, connections, supports, loads, and calculated forces.
+- **Detailed Output**: Print detailed information about nodes, connections, supports, loads, and reaction forces.
 
+## Getting Started
+
+### Prerequisites
+- Python 3.x
+- Required Python packages:
+  - `numpy`
+  - `matplotlib`
+  - `tkinter`
+  - `scipy`
+
+You can install the required packages using `pip`:
+```bash
+pip install numpy matplotlib tk scipy
+```
+
+### Installation
+1. Clone this repository:
+```bash
+git clone https://github.com/yourusername/truss-simulation.git
+```
+2. Navigate to the project directory:
+```bash
+cd truss-simulation
+```
+
+### Running the Application
+Run the main application script:
+```bash
+python main.py
+```
+
+## Usage
+### Importing Truss Data
+1. Click on the Import Data button.
+2. Select a JSON file containing the truss data.
+### Processing the Truss
+1. After importing the data, click on the Process Truss button.
+2. The application will calculate the forces within the truss   and display the results.
+### Truss Data Format
+The JSON file should contain the following structure:
+```bash
+{
+    "nodes": [
+        [x1, y1],
+        [x2, y2],
+        ...
+    ],
+    "connections": [
+        [node_index1, node_index2],
+        [node_index3, node_index4],
+        ...
+    ],
+    "supports": {
+        "node_index": "support_type",
+        ...
+    },
+    "loads": [
+        [node_index, magnitude, angle_degrees],
+        ...
+    ]
+}
+```
+
+See examples folder for further examples.
+
+## File Descriptions
+
+### main.py
+The entry point of the application. It initializes and runs the Truss Simulation GUI.
+
+### classes.py
+Defines the core classes for the truss simulation:
+
+- Node: Represents a node in the truss.
+- Connection: Represents a connection (edge) between two nodes.
+- Support: Represents a support node.
+- Force: Represents a force applied to a node.
+- Load: Represents a load applied to a node.
+- Reaction: Represents a reaction force at a support node.
+- ReactionX and ReactionY: Represent reaction forces in the x and y directions, respectively.
+
+### functions.py
+Contains the core functions for the truss simulation:
+
+- plot_truss_structure(): Plots the truss structure.
+- import_json(): Imports truss data from a JSON file.
+- print_all(): Prints all truss data.
+- calculate_reaction_forces(): Calculates reaction forces for supports.
+- calculate_forces(): Calculates forces in the truss structure.
+
+### gui.py
+Defines the TrussApp class, which creates and manages the GUI for the truss simulation application.
+
+## Roadmap
 *   Define input format
     *  Input as JSON - Done
     *  Input by GUI - TBD
