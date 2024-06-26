@@ -18,10 +18,12 @@ The Truss Simulation Application is a graphical user interface (GUI) tool design
   - `matplotlib`
   - `tkinter`
   - `scipy`
+  - `sphinx` for docs
+  - `sphinx_rtd_theme` for docs
 
 You can install the required packages using `pip`:
 ```bash
-pip install numpy matplotlib tk scipy
+pip install numpy matplotlib tk scipy sphinx sphinx_rtd_theme
 ```
 
 ### Installation
@@ -33,6 +35,15 @@ git clone https://github.com/yourusername/truss-simulation.git
 ```bash
 cd truss-simulation
 ```
+
+### Building the Documentation
+1. Navigate to the `docs` directory in your repository:
+2. Run the following command to build the HTML documentation:
+```bash
+make html
+```
+3. View the Documentation
+The generated HTML files will be located in the `_build/html` directory. Open `index.html` in a web browser to view the documentation.
 
 ### Running the Application
 Run the main application script:
